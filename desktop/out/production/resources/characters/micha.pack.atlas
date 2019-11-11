@@ -1,0 +1,90 @@
+
+micha.pack.png
+size: 1024,128
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+charset-0000
+  rotate: false
+  xy: 2, 2
+  size: 75, 75
+  orig: 75, 75
+  offset: 0, 0
+  index: -1
+charset-0001
+  rotate: false
+  xy: 79, 2
+  size: 75, 75
+  orig: 75, 75
+  offset: 0, 0
+  index: -1
+charset-0002
+  rotate: false
+  xy: 156, 2
+  size: 75, 75
+  orig: 75, 75
+  offset: 0, 0
+  index: -1
+charset-0003
+  rotate: false
+  xy: 233, 2
+  size: 75, 75
+  orig: 75, 75
+  offset: 0, 0
+  index: -1
+charset-0004
+  rotate: false
+  xy: 310, 2
+  size: 75, 75
+  orig: 75, 75
+  offset: 0, 0
+  index: -1
+charset-0005
+  rotate: false
+  xy: 387, 2
+  size: 75, 75
+  orig: 75, 75
+  offset: 0, 0
+  index: -1
+charset-0006
+  rotate: false
+  xy: 464, 2
+  size: 75, 75
+  orig: 75, 75
+  offset: 0, 0
+  index: -1
+charset-0007
+  rotate: false
+  xy: 541, 2
+  size: 75, 75
+  orig: 75, 75
+  offset: 0, 0
+  index: -1
+charset-0008
+  rotate: false
+  xy: 618, 2
+  size: 75, 75
+  orig: 75, 75
+  offset: 0, 0
+  index: -1
+charset-0009
+  rotate: false
+  xy: 695, 2
+  size: 75, 75
+  orig: 75, 75
+  offset: 0, 0
+  index: -1
+charset-0010
+  rotate: false
+  xy: 772, 2
+  size: 75, 75
+  orig: 75, 75
+  offset: 0, 0
+  index: -1
+charset-0011
+  rotate: false
+  xy: 849, 2
+  size: 75, 75
+  orig: 75, 75
+  offset: 0, 0
+  index: -1

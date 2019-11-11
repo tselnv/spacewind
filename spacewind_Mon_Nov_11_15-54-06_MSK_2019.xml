@@ -1,0 +1,891 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="spacewind" default="all">
+  
+  
+  <property file="spacewind.properties"/>
+  <!-- Uncomment the following property if no tests compilation is needed -->
+  <!-- 
+  <property name="skip.tests" value="true"/>
+   -->
+  
+  <!-- Compiler options -->
+  
+  <property name="compiler.debug" value="on"/>
+  <property name="compiler.generate.no.warnings" value="off"/>
+  <property name="compiler.args" value=""/>
+  <property name="compiler.max.memory" value="700m"/>
+  <patternset id="ignored.files">
+    <exclude name="**/*.hprof/**"/>
+    <exclude name="**/*.pyc/**"/>
+    <exclude name="**/*.pyo/**"/>
+    <exclude name="**/*.rbc/**"/>
+    <exclude name="**/*.yarb/**"/>
+    <exclude name="**/*~/**"/>
+    <exclude name="**/.DS_Store/**"/>
+    <exclude name="**/.git/**"/>
+    <exclude name="**/.hg/**"/>
+    <exclude name="**/.svn/**"/>
+    <exclude name="**/CVS/**"/>
+    <exclude name="**/__pycache__/**"/>
+    <exclude name="**/_svn/**"/>
+    <exclude name="**/vssver.scc/**"/>
+    <exclude name="**/vssver2.scc/**"/>
+  </patternset>
+  <patternset id="library.patterns">
+    <include name="*.war"/>
+    <include name="*.swc"/>
+    <include name="*.apk"/>
+    <include name="*.zip"/>
+    <include name="*.egg"/>
+    <include name="*.ear"/>
+    <include name="*.ane"/>
+    <include name="*.jar"/>
+    <include name="*.klib"/>
+  </patternset>
+  <patternset id="compiler.resources">
+    <exclude name="**/?*.java"/>
+    <exclude name="**/?*.form"/>
+    <exclude name="**/?*.class"/>
+    <exclude name="**/?*.groovy"/>
+    <exclude name="**/?*.scala"/>
+    <exclude name="**/?*.flex"/>
+    <exclude name="**/?*.kt"/>
+    <exclude name="**/?*.clj"/>
+    <exclude name="**/?*.aj"/>
+  </patternset>
+  
+  <!-- JDK definitions -->
+  
+  <property name="jdk.bin.1.8.0_221" value="${jdk.home.1.8.0_221}/bin"/>
+  <path id="jdk.classpath.1.8.0_221">
+    <fileset dir="${jdk.home.1.8.0_221}">
+      <include name="jre/lib/charsets.jar"/>
+      <include name="jre/lib/deploy.jar"/>
+      <include name="jre/lib/ext/access-bridge-64.jar"/>
+      <include name="jre/lib/ext/cldrdata.jar"/>
+      <include name="jre/lib/ext/dnsns.jar"/>
+      <include name="jre/lib/ext/jaccess.jar"/>
+      <include name="jre/lib/ext/jfxrt.jar"/>
+      <include name="jre/lib/ext/localedata.jar"/>
+      <include name="jre/lib/ext/nashorn.jar"/>
+      <include name="jre/lib/ext/sunec.jar"/>
+      <include name="jre/lib/ext/sunjce_provider.jar"/>
+      <include name="jre/lib/ext/sunmscapi.jar"/>
+      <include name="jre/lib/ext/sunpkcs11.jar"/>
+      <include name="jre/lib/ext/zipfs.jar"/>
+      <include name="jre/lib/javaws.jar"/>
+      <include name="jre/lib/jce.jar"/>
+      <include name="jre/lib/jfr.jar"/>
+      <include name="jre/lib/jfxswt.jar"/>
+      <include name="jre/lib/jsse.jar"/>
+      <include name="jre/lib/management-agent.jar"/>
+      <include name="jre/lib/plugin.jar"/>
+      <include name="jre/lib/resources.jar"/>
+      <include name="jre/lib/rt.jar"/>
+    </fileset>
+  </path>
+  
+  <property name="project.jdk.home" value="${jdk.home.1.8.0_221}"/>
+  <property name="project.jdk.bin" value="${jdk.bin.1.8.0_221}"/>
+  <property name="project.jdk.classpath" value="jdk.classpath.1.8.0_221"/>
+  
+  
+  <!-- Project Libraries -->
+  
+  <path id="library.gradle:_com.badlogicgames.box2dlights:box2dlights:1.4.classpath">
+    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/com.badlogicgames.box2dlights/box2dlights/1.4/3d77ad5b4164fb32fc67e2446e35911bb0aaf0bd/box2dlights-1.4.jar"/>
+  </path>
+  
+  <path id="library.gradle:_com.badlogicgames.gdx:gdx-ai:1.8.0.classpath">
+    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-ai/1.8.0/ec30677d8ab1a8b8aa4b853c5f4e4b1361f50bf5/gdx-ai-1.8.0.jar"/>
+  </path>
+  
+  <path id="library.gradle:_com.badlogicgames.gdx:gdx-backend-headless:1.9.10.classpath">
+    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-backend-headless/1.9.10/d357526e6bb3d36b01b4f833ab42588e5285d487/gdx-backend-headless-1.9.10.jar"/>
+  </path>
+  
+  <path id="library.gradle:_com.badlogicgames.gdx:gdx-backend-lwjgl:1.9.10.classpath">
+    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-backend-lwjgl/1.9.10/8f88abd43500d94c486d25f04d642318da72773a/gdx-backend-lwjgl-1.9.10.jar"/>
+  </path>
+  
+  <path id="library.gradle:_com.badlogicgames.gdx:gdx-box2d:1.6.2.classpath">
+    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-box2d/1.6.2/b4406b97b35d7caf7111400ceebc8b92c8998168/gdx-box2d-1.6.2.jar"/>
+  </path>
+  
+  <path id="library.gradle:_com.badlogicgames.gdx:gdx-freetype-platform:natives-desktop:1.9.10.classpath">
+    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-freetype-platform/1.9.10/5c4b67db9c1d62383b718ce040c7cdb555d5b19f/gdx-freetype-platform-1.9.10-natives-desktop.jar"/>
+  </path>
+  
+  <path id="library.gradle:_com.badlogicgames.gdx:gdx-freetype:1.9.10.classpath">
+    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-freetype/1.9.10/8853e4f08589a9feb4b851187909cfde8810e491/gdx-freetype-1.9.10.jar"/>
+  </path>
+  
+  <path id="library.gradle:_com.badlogicgames.gdx:gdx-platform:natives-desktop:1.9.10.classpath">
+    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-platform/1.9.10/1907b49f8363dd1ee37d273854a9cc3c741a6e66/gdx-platform-1.9.10-natives-desktop.jar"/>
+  </path>
+  
+  <path id="library.gradle:_com.badlogicgames.gdx:gdx-tools:1.9.10.classpath">
+    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-tools/1.9.10/67524f012868e0cff57531b5bfda2781d00c6b1f/gdx-tools-1.9.10.jar"/>
+  </path>
+  
+  <path id="library.gradle:_com.badlogicgames.gdx:gdx:1.9.10.classpath">
+    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx/1.9.10/79d9ad27bd5e3eb18c9ade61d3a27d7237695d53/gdx-1.9.10.jar"/>
+  </path>
+  
+  <path id="library.gradle:_com.badlogicgames.jlayer:jlayer:1.0.1-gdx.classpath">
+    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/com.badlogicgames.jlayer/jlayer/1.0.1-gdx/7cca83cec5c1b2f011362f4d85aabd71a73b049d/jlayer-1.0.1-gdx.jar"/>
+  </path>
+  
+  <path id="library.gradle:_net.java.jinput:jinput-platform:natives-linux:2.0.5.classpath">
+    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/net.java.jinput/jinput-platform/2.0.5/7ff832a6eb9ab6a767f1ade2b548092d0fa64795/jinput-platform-2.0.5-natives-linux.jar"/>
+  </path>
+  
+  <path id="library.gradle:_net.java.jinput:jinput-platform:natives-osx:2.0.5.classpath">
+    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/net.java.jinput/jinput-platform/2.0.5/53f9c919f34d2ca9de8c51fc4e1e8282029a9232/jinput-platform-2.0.5-natives-osx.jar"/>
+  </path>
+  
+  <path id="library.gradle:_net.java.jinput:jinput-platform:natives-windows:2.0.5.classpath">
+    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/net.java.jinput/jinput-platform/2.0.5/385ee093e01f587f30ee1c8a2ee7d408fd732e16/jinput-platform-2.0.5-natives-windows.jar"/>
+  </path>
+  
+  <path id="library.gradle:_net.java.jinput:jinput:2.0.5.classpath">
+    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/net.java.jinput/jinput/2.0.5/39c7796b469a600f72380316f6b1f11db6c2c7c4/jinput-2.0.5.jar"/>
+  </path>
+  
+  <path id="library.gradle:_net.java.jutils:jutils:1.0.0.classpath">
+    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/net.java.jutils/jutils/1.0.0/e12fe1fda814bd348c1579329c86943d2cd3c6a6/jutils-1.0.0.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.jcraft:jorbis:0.0.17.classpath">
+    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.jcraft/jorbis/0.0.17/8872d22b293e8f5d7d56ff92be966e6dc28ebdc6/jorbis-0.0.17.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.lwjgl.lwjgl:lwjgl-platform:natives-linux:2.9.3.classpath">
+    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.lwjgl.lwjgl/lwjgl-platform/2.9.3/b1eafe80093381c56415731e1d64279e6140bcd0/lwjgl-platform-2.9.3-natives-linux.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.lwjgl.lwjgl:lwjgl-platform:natives-osx:2.9.3.classpath">
+    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.lwjgl.lwjgl/lwjgl-platform/2.9.3/6686cf6ddaa20b4290aa6599a09bc0d17369be05/lwjgl-platform-2.9.3-natives-osx.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.lwjgl.lwjgl:lwjgl-platform:natives-windows:2.9.3.classpath">
+    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.lwjgl.lwjgl/lwjgl-platform/2.9.3/fbc2afb3e288578e9942578decb6291a490549a0/lwjgl-platform-2.9.3-natives-windows.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.lwjgl.lwjgl:lwjgl:2.9.3.classpath">
+    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.lwjgl.lwjgl/lwjgl/2.9.3/3df168ac74e4a8c96562cdff24ad352e255bf89c/lwjgl-2.9.3.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.lwjgl.lwjgl:lwjgl_util:2.9.3.classpath">
+    <pathelement location="${basedir}/../../.gradle/caches/modules-2/files-2.1/org.lwjgl.lwjgl/lwjgl_util/2.9.3/751f06b62424da056954c67288fd5c494431e350/lwjgl_util-2.9.3.jar"/>
+  </path>
+  <!-- Register Custom Compiler Taskdefs -->
+  <property name="javac2.home" value="${idea.home}/lib"/>
+  <path id="javac2.classpath">
+    <fileset dir="${javac2.home}">
+      <include name="javac2.jar"/>
+      <include name="jdom.jar"/>
+      <include name="asm-all*.jar"/>
+      <include name="forms-*.jar"/>
+    </fileset>
+  </path>
+  <target name="register.custom.compilers">
+    <taskdef name="javac2" classname="com.intellij.ant.Javac2" classpathref="javac2.classpath"/>
+    <taskdef name="instrumentIdeaExtensions" classname="com.intellij.ant.InstrumentIdeaExtensions" classpathref="javac2.classpath"/>
+  </target>
+  
+  <!-- Modules -->
+  
+  
+  <!-- Module spacewind -->
+  
+  <dirname property="module.spacewind.basedir" file="${ant.file}"/>
+  
+  
+  <property name="module.jdk.home.spacewind" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.spacewind" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.spacewind" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.spacewind" value="-encoding UTF-8 -source 8 -target 8 ${compiler.args}"/>
+  
+  <property name="spacewind.output.dir" value="undefined"/>
+  <property name="spacewind.testoutput.dir" value="undefined"/>
+  
+  <path id="spacewind.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="spacewind.module.production.classpath">
+    <path refid="${module.jdk.classpath.spacewind}"/>
+  </path>
+  
+  <path id="spacewind.runtime.production.module.classpath"/>
+  
+  <path id="spacewind.module.classpath">
+    <path refid="${module.jdk.classpath.spacewind}"/>
+  </path>
+  
+  <path id="spacewind.runtime.module.classpath"/>
+  
+  
+  <patternset id="excluded.from.module.spacewind">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.spacewind">
+    <patternset refid="excluded.from.module.spacewind"/>
+  </patternset>
+  
+  
+  <target name="compile.module.spacewind" depends="compile.module.spacewind.production,compile.module.spacewind.tests" description="Compile module spacewind"/>
+  
+  <target name="compile.module.spacewind.production" depends="register.custom.compilers" description="Compile module spacewind; production classes"/>
+  
+  <target name="compile.module.spacewind.tests" depends="register.custom.compilers,compile.module.spacewind.production" description="compile module spacewind; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.spacewind" description="cleanup module">
+    <delete dir="${spacewind.output.dir}"/>
+    <delete dir="${spacewind.testoutput.dir}"/>
+  </target>
+  
+  
+  <!-- Module spacewind.core -->
+  
+  <dirname property="module.spacewind.core.basedir" file="${ant.file}"/>
+  
+  
+  <property name="module.jdk.home.spacewind.core" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.spacewind.core" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.spacewind.core" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.spacewind.core" value="-encoding UTF-8 -source 8 -target 8 ${compiler.args}"/>
+  
+  <property name="spacewind.core.output.dir" value="undefined"/>
+  <property name="spacewind.core.testoutput.dir" value="undefined"/>
+  
+  <path id="spacewind.core.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="spacewind.core.module.production.classpath">
+    <path refid="${module.jdk.classpath.spacewind.core}"/>
+  </path>
+  
+  <path id="spacewind.core.runtime.production.module.classpath"/>
+  
+  <path id="spacewind.core.module.classpath">
+    <path refid="${module.jdk.classpath.spacewind.core}"/>
+  </path>
+  
+  <path id="spacewind.core.runtime.module.classpath"/>
+  
+  
+  <patternset id="excluded.from.module.spacewind.core">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.spacewind.core">
+    <patternset refid="excluded.from.module.spacewind.core"/>
+  </patternset>
+  
+  
+  <target name="compile.module.spacewind.core" depends="compile.module.spacewind.core.production,compile.module.spacewind.core.tests" description="Compile module spacewind.core"/>
+  
+  <target name="compile.module.spacewind.core.production" depends="register.custom.compilers" description="Compile module spacewind.core; production classes"/>
+  
+  <target name="compile.module.spacewind.core.tests" depends="register.custom.compilers,compile.module.spacewind.core.production" description="compile module spacewind.core; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.spacewind.core" description="cleanup module">
+    <delete dir="${spacewind.core.output.dir}"/>
+    <delete dir="${spacewind.core.testoutput.dir}"/>
+  </target>
+  
+  
+  <!-- Module spacewind.core.main -->
+  
+  <dirname property="module.spacewind.core.main.basedir" file="${ant.file}"/>
+  
+  
+  <property name="module.jdk.home.spacewind.core.main" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.spacewind.core.main" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.spacewind.core.main" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.spacewind.core.main" value="-encoding UTF-8 -source 7 -target 7 ${compiler.args}"/>
+  
+  <property name="spacewind.core.main.output.dir" value="${module.spacewind.core.main.basedir}/core/build/classes/java/main"/>
+  <property name="spacewind.core.main.testoutput.dir" value="${module.spacewind.core.main.basedir}/core/build/classes/java/main"/>
+  
+  <path id="spacewind.core.main.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="spacewind.core.main.module.production.classpath">
+    <path refid="${module.jdk.classpath.spacewind.core.main}"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-freetype:1.9.10.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-ai:1.8.0.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.box2dlights:box2dlights:1.4.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-box2d:1.6.2.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx:1.9.10.classpath"/>
+  </path>
+  
+  <path id="spacewind.core.main.runtime.production.module.classpath">
+    <pathelement location="${spacewind.core.main.output.dir}"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-freetype:1.9.10.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-ai:1.8.0.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.box2dlights:box2dlights:1.4.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-box2d:1.6.2.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx:1.9.10.classpath"/>
+  </path>
+  
+  <path id="spacewind.core.main.module.classpath">
+    <path refid="${module.jdk.classpath.spacewind.core.main}"/>
+    <pathelement location="${spacewind.core.main.output.dir}"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-freetype:1.9.10.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-ai:1.8.0.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.box2dlights:box2dlights:1.4.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-box2d:1.6.2.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx:1.9.10.classpath"/>
+  </path>
+  
+  <path id="spacewind.core.main.runtime.module.classpath">
+    <pathelement location="${spacewind.core.main.output.dir}"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-freetype:1.9.10.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-ai:1.8.0.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.box2dlights:box2dlights:1.4.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-box2d:1.6.2.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx:1.9.10.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.spacewind.core.main">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.spacewind.core.main">
+    <patternset refid="excluded.from.module.spacewind.core.main"/>
+  </patternset>
+  
+  <path id="spacewind.core.main.module.sourcepath">
+    <dirset dir="${module.spacewind.core.main.basedir}/core">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.spacewind.core.main" depends="compile.module.spacewind.core.main.production,compile.module.spacewind.core.main.tests" description="Compile module spacewind.core.main"/>
+  
+  <target name="compile.module.spacewind.core.main.production" depends="register.custom.compilers" description="Compile module spacewind.core.main; production classes">
+    <mkdir dir="${spacewind.core.main.output.dir}"/>
+    <javac2 destdir="${spacewind.core.main.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.spacewind.core.main}/javac">
+      <compilerarg line="${compiler.args.spacewind.core.main}"/>
+      <bootclasspath refid="spacewind.core.main.module.bootclasspath"/>
+      <classpath refid="spacewind.core.main.module.production.classpath"/>
+      <src refid="spacewind.core.main.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.spacewind.core.main"/>
+    </javac2>
+    
+    <copy todir="${spacewind.core.main.output.dir}">
+      <fileset dir="${module.spacewind.core.main.basedir}/core/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.spacewind.core.main.tests" depends="register.custom.compilers,compile.module.spacewind.core.main.production" description="compile module spacewind.core.main; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.spacewind.core.main" description="cleanup module">
+    <delete dir="${spacewind.core.main.output.dir}"/>
+    <delete dir="${spacewind.core.main.testoutput.dir}"/>
+  </target>
+  
+  
+  <!-- Module spacewind.desktop -->
+  
+  <dirname property="module.spacewind.desktop.basedir" file="${ant.file}"/>
+  
+  
+  <property name="module.jdk.home.spacewind.desktop" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.spacewind.desktop" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.spacewind.desktop" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.spacewind.desktop" value="-encoding UTF-8 -source 8 -target 8 ${compiler.args}"/>
+  
+  <property name="spacewind.desktop.output.dir" value="undefined"/>
+  <property name="spacewind.desktop.testoutput.dir" value="undefined"/>
+  
+  <path id="spacewind.desktop.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="spacewind.desktop.module.production.classpath">
+    <path refid="${module.jdk.classpath.spacewind.desktop}"/>
+  </path>
+  
+  <path id="spacewind.desktop.runtime.production.module.classpath"/>
+  
+  <path id="spacewind.desktop.module.classpath">
+    <path refid="${module.jdk.classpath.spacewind.desktop}"/>
+  </path>
+  
+  <path id="spacewind.desktop.runtime.module.classpath"/>
+  
+  
+  <patternset id="excluded.from.module.spacewind.desktop">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.spacewind.desktop">
+    <patternset refid="excluded.from.module.spacewind.desktop"/>
+  </patternset>
+  
+  
+  <target name="compile.module.spacewind.desktop" depends="compile.module.spacewind.desktop.production,compile.module.spacewind.desktop.tests" description="Compile module spacewind.desktop"/>
+  
+  <target name="compile.module.spacewind.desktop.production" depends="register.custom.compilers" description="Compile module spacewind.desktop; production classes"/>
+  
+  <target name="compile.module.spacewind.desktop.tests" depends="register.custom.compilers,compile.module.spacewind.desktop.production" description="compile module spacewind.desktop; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.spacewind.desktop" description="cleanup module">
+    <delete dir="${spacewind.desktop.output.dir}"/>
+    <delete dir="${spacewind.desktop.testoutput.dir}"/>
+  </target>
+  
+  
+  <!-- Module spacewind.core.test -->
+  
+  <dirname property="module.spacewind.core.test.basedir" file="${ant.file}"/>
+  
+  
+  <property name="module.jdk.home.spacewind.core.test" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.spacewind.core.test" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.spacewind.core.test" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.spacewind.core.test" value="-encoding UTF-8 -source 7 -target 7 ${compiler.args}"/>
+  
+  <property name="spacewind.core.test.output.dir" value="undefined"/>
+  <property name="spacewind.core.test.testoutput.dir" value="${module.spacewind.core.test.basedir}/core/build/classes/java/test"/>
+  
+  <path id="spacewind.core.test.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="spacewind.core.test.module.production.classpath">
+    <path refid="${module.jdk.classpath.spacewind.core.test}"/>
+    <pathelement location="${spacewind.core.main.output.dir}"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-freetype:1.9.10.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-ai:1.8.0.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.box2dlights:box2dlights:1.4.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-box2d:1.6.2.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx:1.9.10.classpath"/>
+  </path>
+  
+  <path id="spacewind.core.test.runtime.production.module.classpath">
+    <path refid="spacewind.core.main.runtime.production.module.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-freetype:1.9.10.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-ai:1.8.0.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.box2dlights:box2dlights:1.4.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-box2d:1.6.2.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx:1.9.10.classpath"/>
+  </path>
+  
+  <path id="spacewind.core.test.module.classpath">
+    <path refid="${module.jdk.classpath.spacewind.core.test}"/>
+    <pathelement location="${spacewind.core.main.output.dir}"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-freetype:1.9.10.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-ai:1.8.0.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.box2dlights:box2dlights:1.4.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-box2d:1.6.2.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx:1.9.10.classpath"/>
+  </path>
+  
+  <path id="spacewind.core.test.runtime.module.classpath">
+    <pathelement location="${spacewind.core.test.testoutput.dir}"/>
+    <path refid="spacewind.core.main.runtime.module.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-freetype:1.9.10.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-ai:1.8.0.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.box2dlights:box2dlights:1.4.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-box2d:1.6.2.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx:1.9.10.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.spacewind.core.test">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.spacewind.core.test">
+    <patternset refid="excluded.from.module.spacewind.core.test"/>
+  </patternset>
+  
+  
+  <target name="compile.module.spacewind.core.test" depends="compile.module.spacewind.core.test.production,compile.module.spacewind.core.test.tests" description="Compile module spacewind.core.test"/>
+  
+  <target name="compile.module.spacewind.core.test.production" depends="register.custom.compilers,compile.module.spacewind.core.main" description="Compile module spacewind.core.test; production classes"/>
+  
+  <target name="compile.module.spacewind.core.test.tests" depends="register.custom.compilers,compile.module.spacewind.core.test.production" description="compile module spacewind.core.test; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.spacewind.core.test" description="cleanup module">
+    <delete dir="${spacewind.core.test.output.dir}"/>
+    <delete dir="${spacewind.core.test.testoutput.dir}"/>
+  </target>
+  
+  
+  <!-- Module spacewind.desktop.main -->
+  
+  <dirname property="module.spacewind.desktop.main.basedir" file="${ant.file}"/>
+  
+  
+  <property name="module.jdk.home.spacewind.desktop.main" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.spacewind.desktop.main" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.spacewind.desktop.main" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.spacewind.desktop.main" value="-encoding UTF-8 -source 7 -target 7 ${compiler.args}"/>
+  
+  <property name="spacewind.desktop.main.output.dir" value="${module.spacewind.desktop.main.basedir}/desktop/build/classes/java/main"/>
+  <property name="spacewind.desktop.main.testoutput.dir" value="${module.spacewind.desktop.main.basedir}/desktop/build/classes/java/main"/>
+  
+  <path id="spacewind.desktop.main.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="spacewind.desktop.main.module.production.classpath">
+    <path refid="${module.jdk.classpath.spacewind.desktop.main}"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-tools:1.9.10.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-backend-lwjgl:1.9.10.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-platform:natives-desktop:1.9.10.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-freetype-platform:natives-desktop:1.9.10.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-backend-headless:1.9.10.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-freetype:1.9.10.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-ai:1.8.0.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.box2dlights:box2dlights:1.4.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-box2d:1.6.2.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx:1.9.10.classpath"/>
+    <path refid="library.gradle:_org.lwjgl.lwjgl:lwjgl_util:2.9.3.classpath"/>
+    <path refid="library.gradle:_org.lwjgl.lwjgl:lwjgl:2.9.3.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.jlayer:jlayer:1.0.1-gdx.classpath"/>
+    <path refid="library.gradle:_org.jcraft:jorbis:0.0.17.classpath"/>
+    <path refid="library.gradle:_org.lwjgl.lwjgl:lwjgl-platform:natives-windows:2.9.3.classpath"/>
+    <path refid="library.gradle:_org.lwjgl.lwjgl:lwjgl-platform:natives-linux:2.9.3.classpath"/>
+    <path refid="library.gradle:_org.lwjgl.lwjgl:lwjgl-platform:natives-osx:2.9.3.classpath"/>
+    <path refid="library.gradle:_net.java.jinput:jinput:2.0.5.classpath"/>
+    <path refid="library.gradle:_net.java.jutils:jutils:1.0.0.classpath"/>
+    <pathelement location="${spacewind.core.main.output.dir}"/>
+  </path>
+  
+  <path id="spacewind.desktop.main.runtime.production.module.classpath">
+    <pathelement location="${spacewind.desktop.main.output.dir}"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-tools:1.9.10.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-backend-lwjgl:1.9.10.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-platform:natives-desktop:1.9.10.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-freetype-platform:natives-desktop:1.9.10.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-backend-headless:1.9.10.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-freetype:1.9.10.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-ai:1.8.0.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.box2dlights:box2dlights:1.4.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-box2d:1.6.2.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx:1.9.10.classpath"/>
+    <path refid="library.gradle:_org.lwjgl.lwjgl:lwjgl_util:2.9.3.classpath"/>
+    <path refid="library.gradle:_org.lwjgl.lwjgl:lwjgl:2.9.3.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.jlayer:jlayer:1.0.1-gdx.classpath"/>
+    <path refid="library.gradle:_org.jcraft:jorbis:0.0.17.classpath"/>
+    <path refid="library.gradle:_org.lwjgl.lwjgl:lwjgl-platform:natives-windows:2.9.3.classpath"/>
+    <path refid="library.gradle:_org.lwjgl.lwjgl:lwjgl-platform:natives-linux:2.9.3.classpath"/>
+    <path refid="library.gradle:_org.lwjgl.lwjgl:lwjgl-platform:natives-osx:2.9.3.classpath"/>
+    <path refid="library.gradle:_net.java.jinput:jinput:2.0.5.classpath"/>
+    <path refid="library.gradle:_net.java.jutils:jutils:1.0.0.classpath"/>
+    <path refid="library.gradle:_net.java.jinput:jinput-platform:natives-linux:2.0.5.classpath"/>
+    <path refid="spacewind.core.main.runtime.production.module.classpath"/>
+    <path refid="library.gradle:_net.java.jinput:jinput-platform:natives-windows:2.0.5.classpath"/>
+    <path refid="library.gradle:_net.java.jinput:jinput-platform:natives-osx:2.0.5.classpath"/>
+  </path>
+  
+  <path id="spacewind.desktop.main.module.classpath">
+    <path refid="${module.jdk.classpath.spacewind.desktop.main}"/>
+    <pathelement location="${spacewind.desktop.main.output.dir}"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-tools:1.9.10.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-backend-lwjgl:1.9.10.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-platform:natives-desktop:1.9.10.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-freetype-platform:natives-desktop:1.9.10.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-backend-headless:1.9.10.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-freetype:1.9.10.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-ai:1.8.0.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.box2dlights:box2dlights:1.4.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-box2d:1.6.2.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx:1.9.10.classpath"/>
+    <path refid="library.gradle:_org.lwjgl.lwjgl:lwjgl_util:2.9.3.classpath"/>
+    <path refid="library.gradle:_org.lwjgl.lwjgl:lwjgl:2.9.3.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.jlayer:jlayer:1.0.1-gdx.classpath"/>
+    <path refid="library.gradle:_org.jcraft:jorbis:0.0.17.classpath"/>
+    <path refid="library.gradle:_org.lwjgl.lwjgl:lwjgl-platform:natives-windows:2.9.3.classpath"/>
+    <path refid="library.gradle:_org.lwjgl.lwjgl:lwjgl-platform:natives-linux:2.9.3.classpath"/>
+    <path refid="library.gradle:_org.lwjgl.lwjgl:lwjgl-platform:natives-osx:2.9.3.classpath"/>
+    <path refid="library.gradle:_net.java.jinput:jinput:2.0.5.classpath"/>
+    <path refid="library.gradle:_net.java.jutils:jutils:1.0.0.classpath"/>
+    <path refid="library.gradle:_net.java.jinput:jinput-platform:natives-linux:2.0.5.classpath"/>
+    <pathelement location="${spacewind.core.main.output.dir}"/>
+    <path refid="library.gradle:_net.java.jinput:jinput-platform:natives-windows:2.0.5.classpath"/>
+    <path refid="library.gradle:_net.java.jinput:jinput-platform:natives-osx:2.0.5.classpath"/>
+  </path>
+  
+  <path id="spacewind.desktop.main.runtime.module.classpath">
+    <pathelement location="${spacewind.desktop.main.output.dir}"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-tools:1.9.10.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-backend-lwjgl:1.9.10.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-platform:natives-desktop:1.9.10.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-freetype-platform:natives-desktop:1.9.10.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-backend-headless:1.9.10.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-freetype:1.9.10.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-ai:1.8.0.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.box2dlights:box2dlights:1.4.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-box2d:1.6.2.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx:1.9.10.classpath"/>
+    <path refid="library.gradle:_org.lwjgl.lwjgl:lwjgl_util:2.9.3.classpath"/>
+    <path refid="library.gradle:_org.lwjgl.lwjgl:lwjgl:2.9.3.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.jlayer:jlayer:1.0.1-gdx.classpath"/>
+    <path refid="library.gradle:_org.jcraft:jorbis:0.0.17.classpath"/>
+    <path refid="library.gradle:_org.lwjgl.lwjgl:lwjgl-platform:natives-windows:2.9.3.classpath"/>
+    <path refid="library.gradle:_org.lwjgl.lwjgl:lwjgl-platform:natives-linux:2.9.3.classpath"/>
+    <path refid="library.gradle:_org.lwjgl.lwjgl:lwjgl-platform:natives-osx:2.9.3.classpath"/>
+    <path refid="library.gradle:_net.java.jinput:jinput:2.0.5.classpath"/>
+    <path refid="library.gradle:_net.java.jutils:jutils:1.0.0.classpath"/>
+    <path refid="library.gradle:_net.java.jinput:jinput-platform:natives-linux:2.0.5.classpath"/>
+    <path refid="spacewind.core.main.runtime.module.classpath"/>
+    <path refid="library.gradle:_net.java.jinput:jinput-platform:natives-windows:2.0.5.classpath"/>
+    <path refid="library.gradle:_net.java.jinput:jinput-platform:natives-osx:2.0.5.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.spacewind.desktop.main">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.spacewind.desktop.main">
+    <patternset refid="excluded.from.module.spacewind.desktop.main"/>
+  </patternset>
+  
+  <path id="spacewind.desktop.main.module.sourcepath">
+    <dirset dir="${module.spacewind.desktop.main.basedir}/core">
+      <include name="assets"/>
+    </dirset>
+    <dirset dir="${module.spacewind.desktop.main.basedir}/desktop">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.spacewind.desktop.main" depends="compile.module.spacewind.desktop.main.production,compile.module.spacewind.desktop.main.tests" description="Compile module spacewind.desktop.main"/>
+  
+  <target name="compile.module.spacewind.desktop.main.production" depends="register.custom.compilers,compile.module.spacewind.core.main" description="Compile module spacewind.desktop.main; production classes">
+    <mkdir dir="${spacewind.desktop.main.output.dir}"/>
+    <javac2 destdir="${spacewind.desktop.main.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.spacewind.desktop.main}/javac">
+      <compilerarg line="${compiler.args.spacewind.desktop.main}"/>
+      <bootclasspath refid="spacewind.desktop.main.module.bootclasspath"/>
+      <classpath refid="spacewind.desktop.main.module.production.classpath"/>
+      <src refid="spacewind.desktop.main.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.spacewind.desktop.main"/>
+    </javac2>
+    
+    <copy todir="${spacewind.desktop.main.output.dir}">
+      <fileset dir="${module.spacewind.desktop.main.basedir}/core/assets">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+      <fileset dir="${module.spacewind.desktop.main.basedir}/desktop/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.spacewind.desktop.main.tests" depends="register.custom.compilers,compile.module.spacewind.desktop.main.production" description="compile module spacewind.desktop.main; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.spacewind.desktop.main" description="cleanup module">
+    <delete dir="${spacewind.desktop.main.output.dir}"/>
+    <delete dir="${spacewind.desktop.main.testoutput.dir}"/>
+  </target>
+  
+  
+  <!-- Module spacewind.desktop.test -->
+  
+  <dirname property="module.spacewind.desktop.test.basedir" file="${ant.file}"/>
+  
+  
+  <property name="module.jdk.home.spacewind.desktop.test" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.spacewind.desktop.test" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.spacewind.desktop.test" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.spacewind.desktop.test" value="-encoding UTF-8 -source 7 -target 7 ${compiler.args}"/>
+  
+  <property name="spacewind.desktop.test.output.dir" value="undefined"/>
+  <property name="spacewind.desktop.test.testoutput.dir" value="${module.spacewind.desktop.test.basedir}/desktop/build/classes/java/test"/>
+  
+  <path id="spacewind.desktop.test.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="spacewind.desktop.test.module.production.classpath">
+    <path refid="${module.jdk.classpath.spacewind.desktop.test}"/>
+    <pathelement location="${spacewind.desktop.main.output.dir}"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-tools:1.9.10.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-backend-lwjgl:1.9.10.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-platform:natives-desktop:1.9.10.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-freetype-platform:natives-desktop:1.9.10.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-backend-headless:1.9.10.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-freetype:1.9.10.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-ai:1.8.0.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.box2dlights:box2dlights:1.4.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-box2d:1.6.2.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx:1.9.10.classpath"/>
+    <path refid="library.gradle:_org.lwjgl.lwjgl:lwjgl_util:2.9.3.classpath"/>
+    <path refid="library.gradle:_org.lwjgl.lwjgl:lwjgl:2.9.3.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.jlayer:jlayer:1.0.1-gdx.classpath"/>
+    <path refid="library.gradle:_org.jcraft:jorbis:0.0.17.classpath"/>
+    <path refid="library.gradle:_org.lwjgl.lwjgl:lwjgl-platform:natives-windows:2.9.3.classpath"/>
+    <path refid="library.gradle:_org.lwjgl.lwjgl:lwjgl-platform:natives-linux:2.9.3.classpath"/>
+    <path refid="library.gradle:_org.lwjgl.lwjgl:lwjgl-platform:natives-osx:2.9.3.classpath"/>
+    <path refid="library.gradle:_net.java.jinput:jinput:2.0.5.classpath"/>
+    <path refid="library.gradle:_net.java.jutils:jutils:1.0.0.classpath"/>
+    <pathelement location="${spacewind.core.main.output.dir}"/>
+  </path>
+  
+  <path id="spacewind.desktop.test.runtime.production.module.classpath">
+    <path refid="spacewind.desktop.main.runtime.production.module.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-tools:1.9.10.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-backend-lwjgl:1.9.10.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-platform:natives-desktop:1.9.10.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-freetype-platform:natives-desktop:1.9.10.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-backend-headless:1.9.10.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-freetype:1.9.10.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-ai:1.8.0.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.box2dlights:box2dlights:1.4.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-box2d:1.6.2.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx:1.9.10.classpath"/>
+    <path refid="library.gradle:_org.lwjgl.lwjgl:lwjgl_util:2.9.3.classpath"/>
+    <path refid="library.gradle:_org.lwjgl.lwjgl:lwjgl:2.9.3.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.jlayer:jlayer:1.0.1-gdx.classpath"/>
+    <path refid="library.gradle:_org.jcraft:jorbis:0.0.17.classpath"/>
+    <path refid="library.gradle:_org.lwjgl.lwjgl:lwjgl-platform:natives-windows:2.9.3.classpath"/>
+    <path refid="library.gradle:_org.lwjgl.lwjgl:lwjgl-platform:natives-linux:2.9.3.classpath"/>
+    <path refid="library.gradle:_org.lwjgl.lwjgl:lwjgl-platform:natives-osx:2.9.3.classpath"/>
+    <path refid="library.gradle:_net.java.jinput:jinput:2.0.5.classpath"/>
+    <path refid="library.gradle:_net.java.jutils:jutils:1.0.0.classpath"/>
+    <path refid="library.gradle:_net.java.jinput:jinput-platform:natives-linux:2.0.5.classpath"/>
+    <path refid="spacewind.core.main.runtime.production.module.classpath"/>
+    <path refid="library.gradle:_net.java.jinput:jinput-platform:natives-windows:2.0.5.classpath"/>
+    <path refid="library.gradle:_net.java.jinput:jinput-platform:natives-osx:2.0.5.classpath"/>
+  </path>
+  
+  <path id="spacewind.desktop.test.module.classpath">
+    <path refid="${module.jdk.classpath.spacewind.desktop.test}"/>
+    <pathelement location="${spacewind.desktop.main.output.dir}"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-tools:1.9.10.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-backend-lwjgl:1.9.10.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-platform:natives-desktop:1.9.10.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-freetype-platform:natives-desktop:1.9.10.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-backend-headless:1.9.10.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-freetype:1.9.10.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-ai:1.8.0.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.box2dlights:box2dlights:1.4.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-box2d:1.6.2.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx:1.9.10.classpath"/>
+    <path refid="library.gradle:_org.lwjgl.lwjgl:lwjgl_util:2.9.3.classpath"/>
+    <path refid="library.gradle:_org.lwjgl.lwjgl:lwjgl:2.9.3.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.jlayer:jlayer:1.0.1-gdx.classpath"/>
+    <path refid="library.gradle:_org.jcraft:jorbis:0.0.17.classpath"/>
+    <path refid="library.gradle:_org.lwjgl.lwjgl:lwjgl-platform:natives-windows:2.9.3.classpath"/>
+    <path refid="library.gradle:_org.lwjgl.lwjgl:lwjgl-platform:natives-linux:2.9.3.classpath"/>
+    <path refid="library.gradle:_org.lwjgl.lwjgl:lwjgl-platform:natives-osx:2.9.3.classpath"/>
+    <path refid="library.gradle:_net.java.jinput:jinput:2.0.5.classpath"/>
+    <path refid="library.gradle:_net.java.jutils:jutils:1.0.0.classpath"/>
+    <path refid="library.gradle:_net.java.jinput:jinput-platform:natives-linux:2.0.5.classpath"/>
+    <pathelement location="${spacewind.core.main.output.dir}"/>
+    <path refid="library.gradle:_net.java.jinput:jinput-platform:natives-windows:2.0.5.classpath"/>
+    <path refid="library.gradle:_net.java.jinput:jinput-platform:natives-osx:2.0.5.classpath"/>
+  </path>
+  
+  <path id="spacewind.desktop.test.runtime.module.classpath">
+    <pathelement location="${spacewind.desktop.test.testoutput.dir}"/>
+    <path refid="spacewind.desktop.main.runtime.module.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-tools:1.9.10.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-backend-lwjgl:1.9.10.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-platform:natives-desktop:1.9.10.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-freetype-platform:natives-desktop:1.9.10.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-backend-headless:1.9.10.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-freetype:1.9.10.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-ai:1.8.0.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.box2dlights:box2dlights:1.4.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx-box2d:1.6.2.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.gdx:gdx:1.9.10.classpath"/>
+    <path refid="library.gradle:_org.lwjgl.lwjgl:lwjgl_util:2.9.3.classpath"/>
+    <path refid="library.gradle:_org.lwjgl.lwjgl:lwjgl:2.9.3.classpath"/>
+    <path refid="library.gradle:_com.badlogicgames.jlayer:jlayer:1.0.1-gdx.classpath"/>
+    <path refid="library.gradle:_org.jcraft:jorbis:0.0.17.classpath"/>
+    <path refid="library.gradle:_org.lwjgl.lwjgl:lwjgl-platform:natives-windows:2.9.3.classpath"/>
+    <path refid="library.gradle:_org.lwjgl.lwjgl:lwjgl-platform:natives-linux:2.9.3.classpath"/>
+    <path refid="library.gradle:_org.lwjgl.lwjgl:lwjgl-platform:natives-osx:2.9.3.classpath"/>
+    <path refid="library.gradle:_net.java.jinput:jinput:2.0.5.classpath"/>
+    <path refid="library.gradle:_net.java.jutils:jutils:1.0.0.classpath"/>
+    <path refid="library.gradle:_net.java.jinput:jinput-platform:natives-linux:2.0.5.classpath"/>
+    <path refid="spacewind.core.main.runtime.module.classpath"/>
+    <path refid="library.gradle:_net.java.jinput:jinput-platform:natives-windows:2.0.5.classpath"/>
+    <path refid="library.gradle:_net.java.jinput:jinput-platform:natives-osx:2.0.5.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.spacewind.desktop.test">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.spacewind.desktop.test">
+    <patternset refid="excluded.from.module.spacewind.desktop.test"/>
+  </patternset>
+  
+  
+  <target name="compile.module.spacewind.desktop.test" depends="compile.module.spacewind.desktop.test.production,compile.module.spacewind.desktop.test.tests" description="Compile module spacewind.desktop.test"/>
+  
+  <target name="compile.module.spacewind.desktop.test.production" depends="register.custom.compilers,compile.module.spacewind.desktop.main,compile.module.spacewind.core.main" description="Compile module spacewind.desktop.test; production classes"/>
+  
+  <target name="compile.module.spacewind.desktop.test.tests" depends="register.custom.compilers,compile.module.spacewind.desktop.test.production" description="compile module spacewind.desktop.test; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.spacewind.desktop.test" description="cleanup module">
+    <delete dir="${spacewind.desktop.test.output.dir}"/>
+    <delete dir="${spacewind.desktop.test.testoutput.dir}"/>
+  </target>
+  
+  <target name="init" description="Build initialization">
+    <!-- Perform any build initialization in this target -->
+  </target>
+  
+  <target name="clean" depends="clean.module.spacewind, clean.module.spacewind.core, clean.module.spacewind.core.main, clean.module.spacewind.desktop, clean.module.spacewind.core.test, clean.module.spacewind.desktop.main, clean.module.spacewind.desktop.test" description="cleanup all"/>
+  
+  <target name="build.modules" depends="init, clean, compile.module.spacewind, compile.module.spacewind.core, compile.module.spacewind.core.main, compile.module.spacewind.desktop, compile.module.spacewind.core.test, compile.module.spacewind.desktop.main, compile.module.spacewind.desktop.test" description="build all modules"/>
+  
+  <target name="init.artifacts">
+    <property name="artifacts.temp.dir" value="${basedir}/__artifacts_temp"/>
+    <property name="artifact.output.spacewind.desktop:jar" value="${basedir}/out/artifacts/spacewind_desktop_jar"/>
+    <mkdir dir="${artifacts.temp.dir}"/>
+    <property name="temp.jar.path.spacewind.desktop.jar" value="${artifacts.temp.dir}/spacewind.desktop.jar"/>
+  </target>
+  
+  <target name="artifact.spacewind.desktop:jar" depends="init.artifacts" description="Build &#39;spacewind.desktop:jar&#39; artifact">
+    <property name="artifact.temp.output.spacewind.desktop:jar" value="${artifacts.temp.dir}/spacewind_desktop_jar"/>
+    <mkdir dir="${artifact.temp.output.spacewind.desktop:jar}"/>
+    <jar destfile="${temp.jar.path.spacewind.desktop.jar}" duplicate="preserve" filesetmanifest="mergewithoutmain">
+      <zipfileset file="${basedir}/META-INF/MANIFEST.MF" prefix="META-INF"/>
+    </jar>
+    <copy file="${temp.jar.path.spacewind.desktop.jar}" tofile="${artifact.temp.output.spacewind.desktop:jar}/spacewind.desktop.jar"/>
+  </target>
+  
+  <target name="build.all.artifacts" depends="artifact.spacewind.desktop:jar" description="Build all artifacts">
+    <mkdir dir="${artifact.output.spacewind.desktop:jar}"/>
+    <copy todir="${artifact.output.spacewind.desktop:jar}">
+      <fileset dir="${artifact.temp.output.spacewind.desktop:jar}"/>
+    </copy>
+    
+    <!-- Delete temporary files -->
+    <delete dir="${artifacts.temp.dir}"/>
+  </target>
+  
+  <target name="all" depends="build.modules, build.all.artifacts" description="build all"/>
+</project>
