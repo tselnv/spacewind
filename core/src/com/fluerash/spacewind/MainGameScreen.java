@@ -8,8 +8,10 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.fluerash.spacewind.maps.Map;
-import com.fluerash.spacewind.maps.NPCSimple;
 
 import java.util.ArrayList;
 
@@ -24,6 +26,16 @@ public class MainGameScreen implements Screen {
         static float physicalWidth;
         static float physicalHeight;
         static float aspectRatio;
+
+        static void println(){
+            System.out.println("viewportWidth = " + viewportWidth);
+            System.out.println("viewportHeight = " + viewportHeight);
+            System.out.println("virtualWidth = " + virtualWidth);
+            System.out.println("virtualHeight = " + virtualHeight);
+            System.out.println("physicalWidth = " + physicalWidth);
+            System.out.println("physicalHeight = " + physicalHeight);
+            System.out.println("aspectRatio = " + aspectRatio);
+        }
     }
 
     private SpriteBatch batch;
@@ -32,15 +44,15 @@ public class MainGameScreen implements Screen {
     private Map map;
     private OrthogonalTiledMapRenderer mapRenderer;
 
-    private ArrayList<NPCSimple> npcList;
+    private ArrayList<NPC> npcList;
 
     @Override
     public void show() {
         batch = new SpriteBatch();
         img = new Texture("badlogic.jpg");
 
-        map = new Map();
-        map.setTiledMap("map.tmx");
+        map = new Map("map.tmx");
+        System.out.println("GAME START");
 
         //camera setup
         setupViewport(10, 10);
@@ -56,9 +68,12 @@ public class MainGameScreen implements Screen {
 
         npcList = new ArrayList<>();
 
-        for(int i = 0; i < 20000; i++) {
-            npcList.add(new NPCSimple());
+        for(int i = 0; i < 1000; i++) {
+            NPC npc = new NPC(this);
+            npc.init();
+            npcList.add(npc);
         }
+        Gdx.input.setInputProcessor(npcList.get(0).inputComponent);
     }
 
     @Override
@@ -73,7 +88,7 @@ public class MainGameScreen implements Screen {
         mapRenderer.getBatch().setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         mapRenderer.render();
 
-        for(NPCSimple npc: npcList) {
+        for(NPC npc: npcList) {
             npc.update(map, mapRenderer.getBatch(), delta);
         }
     }
@@ -87,7 +102,9 @@ public class MainGameScreen implements Screen {
 
     private void updateViewport(float delta, int scale){
         setupViewport((int)VIEWPORT.viewportWidth + scale, (int)VIEWPORT.viewportHeight + scale);
+        Vector3 pos = camera.position.cpy();
         camera.setToOrtho(false, VIEWPORT.viewportWidth, VIEWPORT.viewportHeight);
+        camera.position.set(pos.x  , pos.y, 0f);
         camera.update();
     }
 
@@ -168,5 +185,15 @@ public class MainGameScreen implements Screen {
         Gdx.app.debug(TAG, "WorldRenderer: virtual: (" + VIEWPORT.virtualWidth + "," + VIEWPORT.virtualHeight + ")" );
         Gdx.app.debug(TAG, "WorldRenderer: viewport: (" + VIEWPORT.viewportWidth + "," + VIEWPORT.viewportHeight + ")" );
         Gdx.app.debug(TAG, "WorldRenderer: physical: (" + VIEWPORT.physicalWidth + "," + VIEWPORT.physicalHeight + ")" );
+    }
+
+    public void allGotoPositions(Vector3 coords){
+        Vector3 temp = camera.unproject(coords);
+        System.out.println("All goto:" + temp );
+
+        Vector2 gotoVector = new Vector2(temp.x, temp.y);
+        for(NPC npc: npcList){
+            ((NPCInputComponent) npc.inputComponent).gotoPosition(gotoVector);
+        }
     }
 }

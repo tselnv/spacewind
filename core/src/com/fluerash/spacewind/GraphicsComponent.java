@@ -25,8 +25,6 @@ public abstract class GraphicsComponent implements Component {
 
     protected GraphicsComponent() {
         currentPosition = new Vector2(0,0);
-        currentState = Entity.State.WALKING;
-        currentDirection = Entity.Direction.DOWN;
         animations = new Hashtable<>();
     }
 

@@ -3,9 +3,9 @@ package com.fluerash.spacewind;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.fluerash.spacewind.maps.Map;
 
-import java.nio.file.Watchable;
 import java.util.ArrayList;
 
 public class Entity {
@@ -58,13 +58,16 @@ public class Entity {
     public static final int FRAME_HEIGHT = 32;
     private static final int MAX_COMPONENTS = 5;
 
-    private InputComponent inputComponent;
-    private  GraphicsComponent graphicsComponent;
-    private PhysicsComponent physicsComponent;
+    protected MainGameScreen gameScreen;
+    protected InputComponent inputComponent;
+    protected GraphicsComponent graphicsComponent;
+    protected PhysicsComponent physicsComponent;
     private ArrayList<Component> components;
 
-    public Entity(InputComponent inputComponent, PhysicsComponent physicsComponent, GraphicsComponent graphicsComponent){
+    public Entity(MainGameScreen gameScreen, InputComponent inputComponent, PhysicsComponent physicsComponent, GraphicsComponent graphicsComponent){
         //entityConfig = new EntityConfig();
+
+        this.gameScreen = gameScreen;
 
         components = new ArrayList<>(MAX_COMPONENTS);
 
@@ -84,7 +87,7 @@ public class Entity {
     }
 
     public void setState(State state) {
-        physicsComponent.setState(state);
+        physicsComponent.setCurrentState(state);
         graphicsComponent.setState(state);
         inputComponent.setState(state);
     }
@@ -96,8 +99,20 @@ public class Entity {
     }
 
     public void setPosition(Vector2 position){
-        physicsComponent.setCurrentPosition(position);
         graphicsComponent.setCurrentPosition(position);
+    }
+
+    public void collisionWithMap(){
+
+    }
+
+    public void mouseClick(Vector3 coords) {
+        System.out.println("Mouse clicked: " + coords.x + " " + coords.y);
+        gameScreen.allGotoPositions(coords);
+    }
+
+    public Direction findPath(Vector2 gotoVector) {
+        return physicsComponent.findPath(gotoVector);
     }
 
 }

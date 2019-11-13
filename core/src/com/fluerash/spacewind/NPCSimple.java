@@ -1,6 +1,7 @@
-package com.fluerash.spacewind.maps;
+package com.fluerash.spacewind;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -11,7 +12,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.fluerash.spacewind.*;
+import com.fluerash.spacewind.maps.Map;
 
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -40,6 +41,12 @@ public class NPCSimple {
         IMMOBILE
     }
 
+    public static enum BoundingBoxLocation{
+        BOTTOM_LEFT,
+        BOTTOM_CENTER,
+        CENTER,
+    }
+
     protected enum Keys {
         LEFT, RIGHT, UP, DOWN, PAUSE, QUIT
     }
@@ -58,7 +65,7 @@ public class NPCSimple {
     private static final float NPC_SIZE_Y = 1.0f;
     private static final float NPC_SIZE_X = 1.0f;
     private static final float NPC_SPEED = 4.0f * Entity.FRAME_WIDTH; // unit per second
-    private static final float RUNNING_FRAME_DURATION_MOVE = 0.15f*(2.5f * NPC_SIZE_X/NPC_SPEED);
+    private static final float RUNNING_FRAME_DURATION_MOVE = 15f*(2.5f * NPC_SIZE_X/NPC_SPEED);
     protected static final float VELOCITY_ABS = 2f;
 
     protected Vector2 nextPosition;
@@ -69,15 +76,22 @@ public class NPCSimple {
     protected Entity.Direction currentDirection;
     protected Hashtable<Entity.AnimationType, Animation> animations;
     protected float frameTime = 0f;
+    protected Rectangle boundingBox;
+    protected BoundingBoxLocation boundingBoxLocation;
+    private Color tintColor;
 
     public NPCSimple() {
         currentPosition = new Vector2(MathUtils.random(5, 195),MathUtils.random(5, 195));
         currentState = Entity.State.WALKING;
         currentDirection = Entity.Direction.DOWN;
-        nextPosition = currentPosition;
+        nextPosition = currentPosition.cpy();
         velocity = new Vector2(VELOCITY_ABS, VELOCITY_ABS);
         animations = new Hashtable<>();
         loadAnimationTable();
+        boundingBoxLocation = BoundingBoxLocation.CENTER;
+        boundingBox = new Rectangle();
+        initBoundingBox(0.4f, 0.15f);
+        tintColor = new Color(MathUtils.random(0.5f, 1f), MathUtils.random(0.5f, 1f), MathUtils.random(0.5f, 1f), 1 );
     }
 
     public void update(Map map, Batch batch, float delta) {
@@ -98,19 +112,25 @@ public class NPCSimple {
             }
         }
 
+        updateBoundingBoxPosition(nextPosition);
         if(  currentState != Entity.State.IDLE && currentState != Entity.State.IMMOBILE ) {
-
-            if (!isCollisionWithMapLayer(map) && currentState == Entity.State.WALKING) {
+            if (currentState == Entity.State.WALKING && !isCollisionWithMapLayer(map)) {
                 setNextPositionToCurrent();
             }
             calculateNextPosition(delta);
+        } else {
+            updateBoundingBoxPosition(currentPosition);
         }
 
         updateAnimations(delta);
 
+
+        // apply color tint effect
+        batch.setColor(tintColor);
         batch.begin();
         batch.draw(currentFrame, currentPosition.x, currentPosition.y, 1, 1);
         batch.end();
+        batch.setColor(Color.WHITE);
     }
 
     protected void calculateNextPosition(float deltaTime){
@@ -153,9 +173,9 @@ public class NPCSimple {
     }
 
     protected boolean isCollisionWithMapLayer(Map map){
-        if (nextPosition.x < 0 || nextPosition.y <0)
+        if (boundingBox.x < 0 || boundingBox.y <0)
             return true;
-        if (nextPosition.x > map.getWidth() - NPC_SIZE_X|| nextPosition.y > map.getHeight() - NPC_SIZE_Y)
+        if ( boundingBox.x + boundingBox.width > map.getWidthInPixel() || boundingBox.y + boundingBox.height > map.getHeightInPixel())
             return true;
         return false;
     }
@@ -267,47 +287,137 @@ public class NPCSimple {
     }
 
     private void loadAnimationTable(){
+//        if (animations.size() != 0)
+//            return;
+
         TextureAtlas atlas = Utility.getTextureCharactersAtlas();
 
-        TextureRegion[] walkRightFrames = new TextureRegion[3];
+        Array<TextureRegion> walkRightFrames = new Array<>();
         for (int i=0; i<3; i++) {
-            walkRightFrames[i] = atlas.findRegion("charset-" + String.format("%04d",i+6) );
+            walkRightFrames.add(atlas.findRegion("charset-" + String.format("%04d",i+6)) );
         }
 
-        Animation walkRightAnimation = new Animation(RUNNING_FRAME_DURATION_MOVE, walkRightFrames);
+        Animation walkRightAnimation = new Animation(RUNNING_FRAME_DURATION_MOVE, walkRightFrames, Animation.PlayMode.LOOP);
         TextureRegion stayRightFrame  = atlas.findRegion("charset-" + String.format("%04d",7) );
 
-        TextureRegion[] walkLeftFrames = new TextureRegion[3];
+        Array<TextureRegion> walkLeftFrames =new Array<>();
         for (int i=0; i<3; i++) {
-            walkLeftFrames[i] =  new TextureRegion(walkRightFrames[i]);
-            walkLeftFrames[i].flip(true, false);
+            TextureRegion tr = new TextureRegion(walkRightFrames.get(i));
+            tr.flip(true, false);
+            walkLeftFrames.add(tr);
         }
-        Animation walkLeftAnimation = new Animation(RUNNING_FRAME_DURATION_MOVE, walkLeftFrames);
+        Animation walkLeftAnimation = new Animation(RUNNING_FRAME_DURATION_MOVE, walkLeftFrames, Animation.PlayMode.LOOP);
         TextureRegion stayLeftFrame  = atlas.findRegion("charset-" + String.format("%04d",4) );
 
-        TextureRegion[] walkUpFrames = new TextureRegion[3];
+        Array<TextureRegion> walkUpFrames = new Array<>();
         for (int i=0; i<3; i++) {
-            walkUpFrames[i] = atlas.findRegion("charset-" + String.format("%04d",i+9) );
+            walkUpFrames.add(atlas.findRegion("charset-" + String.format("%04d",i+9)) );
         }
-        Animation walkUpAnimation = new Animation(RUNNING_FRAME_DURATION_MOVE, walkUpFrames);
+        Animation walkUpAnimation = new Animation(RUNNING_FRAME_DURATION_MOVE, walkUpFrames, Animation.PlayMode.LOOP);
         TextureRegion stayUpFrame  = atlas.findRegion("charset-" + String.format("%04d",10) );
 
-        TextureRegion[] walkDownFrames = new TextureRegion[3];
+        Array<TextureRegion> walkDownFrames = new Array<>();
         for (int i=0; i<3; i++) {
-            walkDownFrames[i] = atlas.findRegion("charset-" + String.format("%04d",i+0) );
+            walkDownFrames.add(atlas.findRegion("charset-" + String.format("%04d",i+0)) );
         }
-        Animation walkDownAnimation = new Animation(RUNNING_FRAME_DURATION_MOVE, walkDownFrames);
+        Animation walkDownAnimation = new Animation(RUNNING_FRAME_DURATION_MOVE, walkDownFrames, Animation.PlayMode.LOOP);
         TextureRegion stayDownFrame  = atlas.findRegion("charset-" + String.format("%04d",1) );
 
         animations.put(Entity.AnimationType.WALK_LEFT, walkLeftAnimation);
         animations.put(Entity.AnimationType.WALK_RIGHT, walkRightAnimation);
         animations.put(Entity.AnimationType.WALK_UP, walkUpAnimation);
         animations.put(Entity.AnimationType.WALK_DOWN, walkDownAnimation);
-        animations.put(Entity.AnimationType.IDLE, new Animation(1,stayDownFrame,false));
-
+        animations.put(Entity.AnimationType.IDLE, new Animation(1f,stayDownFrame,true));
     }
 
     public void dispose() {
     }
+
+    protected void initBoundingBox(float percentageWidthReduced, float percentageHeightReduced){
+        //Update the current bounding box
+        float width;
+        float height;
+
+        float origWidth =  Entity.FRAME_WIDTH;
+        float origHeight = Entity.FRAME_HEIGHT;
+
+        float widthReductionAmount = 1.0f - percentageWidthReduced; //.8f for 20% (1 - .20)
+        float heightReductionAmount = 1.0f - percentageHeightReduced; //.8f for 20% (1 - .20)
+
+        if( widthReductionAmount > 0 && widthReductionAmount < 1){
+            width = Entity.FRAME_WIDTH * widthReductionAmount;
+        }else{
+            width = Entity.FRAME_WIDTH;
+        }
+
+        if( heightReductionAmount > 0 && heightReductionAmount < 1){
+            height = Entity.FRAME_HEIGHT * heightReductionAmount;
+        }else{
+            height = Entity.FRAME_HEIGHT;
+        }
+
+        if( width == 0 || height == 0){
+            Gdx.app.debug(TAG, "Width and Height are 0!! " + width + ":" + height);
+        }
+
+        //Need to account for the unitscale, since the map coordinates will be in pixels
+        float minX;
+        float minY;
+
+        if( Map.UNIT_SCALE > 0 ) {
+            minX = nextPosition.x / Map.UNIT_SCALE;
+            minY = nextPosition.y / Map.UNIT_SCALE;
+        }else{
+            minX = nextPosition.x;
+            minY = nextPosition.y;
+        }
+
+        boundingBox.setWidth(width);
+        boundingBox.setHeight(height);
+
+        switch(boundingBoxLocation){
+            case BOTTOM_LEFT:
+                boundingBox.set(minX, minY, width, height);
+                break;
+            case BOTTOM_CENTER:
+                boundingBox.setCenter(minX + origWidth/2, minY + origHeight/4);
+                break;
+            case CENTER:
+                boundingBox.setCenter(minX + origWidth/2, minY + origHeight/2);
+                break;
+        }
+
+        //Gdx.app.debug(TAG, "SETTING Bounding Box for " + entity.getEntityConfig().getEntityID() + ": (" + minX + "," + minY + ")  width: " + width + " height: " + height);
+    }
+
+    protected void updateBoundingBoxPosition(Vector2 position){
+        float minX;
+        float minY;
+
+        if( Map.UNIT_SCALE > 0 ) {
+            minX = position.x / Map.UNIT_SCALE;
+            minY = position.y / Map.UNIT_SCALE;
+        }else{
+            minX = position.x;
+            minY = position.y;
+        }
+
+        switch(boundingBoxLocation){
+            case BOTTOM_LEFT:
+                boundingBox.set(minX, minY, boundingBox.getWidth(), boundingBox.getHeight());
+                break;
+            case BOTTOM_CENTER:
+                boundingBox.setCenter(minX + Entity.FRAME_WIDTH/2, minY + Entity.FRAME_HEIGHT/4);
+                break;
+            case CENTER:
+                boundingBox.setCenter(minX + Entity.FRAME_WIDTH/2, minY + Entity.FRAME_HEIGHT/2);
+                break;
+        }
+
+        //Gdx.app.debug(TAG, "SETTING Bounding Box for " + entity.getEntityConfig().getEntityID() + ": (" + minX + "," + minY + ")  width: " + width + " height: " + height);
+    }
+
+
+
 
 }

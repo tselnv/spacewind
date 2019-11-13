@@ -1,6 +1,9 @@
 package com.fluerash.spacewind;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.fluerash.spacewind.maps.Map;
@@ -20,7 +23,7 @@ public abstract class PhysicsComponent implements Component {
     protected Vector2 currentPosition;
     protected Vector2 velocity;
     protected Entity.Direction currentDirection;
-    protected Entity.State state;
+    protected Entity.State currentState;
     protected BoundingBoxLocation boundingBoxLocation;
 
     public abstract void update(Entity entity, Map map, float delta);
@@ -28,6 +31,8 @@ public abstract class PhysicsComponent implements Component {
     public PhysicsComponent() {
         nextPosition = new Vector2(0,0);
         currentPosition = new Vector2(0,0);
+        currentState = Entity.State.WALKING;
+        currentDirection = Entity.Direction.DOWN;
         velocity = new Vector2(VELOCITY_ABS, VELOCITY_ABS);
         boundingBox = new Rectangle();
         boundingBoxLocation = BoundingBoxLocation.BOTTOM_LEFT;
@@ -117,7 +122,7 @@ public abstract class PhysicsComponent implements Component {
     }
 
     protected void calculateNextPosition(float deltaTime){
-        if(state == Entity.State.WALKING) {
+        if(currentState == Entity.State.WALKING) {
             if (currentDirection == null) return;
 
             float testX = currentPosition.x;
@@ -155,13 +160,37 @@ public abstract class PhysicsComponent implements Component {
         this.currentPosition.y = nextPosition.y;
         //Gdx.app.debug(TAG, "SETTING Current Position " + entity.getEntityConfig().getEntityID() + ": (" + _currentEntityPosition.x + "," + _currentEntityPosition.y + ")");
 
-        //entity.sendMessage(MESSAGE.CURRENT_POSITION, currentPosition); //TODO
+        //entity.sendMessage(MESSAGE.CURRENT_POSITION, currentPosition);
         entity.setPosition(currentPosition);
     }
 
     protected boolean isCollisionWithMapLayer(Entity entity, Map map){
-        if (nextPosition.x < 0 && nextPosition.y <0)
-            return true;
+//        if (boundingBox.x < 0 || boundingBox.y <0)
+//            return true;
+//        if ( boundingBox.x + boundingBox.width > map.getWidthInPixel() || boundingBox.y + boundingBox.height > map.getHeightInPixel())
+//            return true;
+//        return false;
+//
+//        MapLayer mapCollisionLayer =  map.getCollisionLayer();
+//        if( mapCollisionLayer == null ){
+//            return false;
+//        }
+
+        MapLayer mapCollisionLayer =  map.getCollisionLayer();
+        if( mapCollisionLayer == null ){
+            return false;
+        }
+
+        Rectangle rectangle;
+        for(MapObject mapObject: mapCollisionLayer.getObjects()){
+            if(mapObject instanceof RectangleMapObject) {
+                rectangle = ((RectangleMapObject) mapObject).getRectangle();
+                if (boundingBox.overlaps(rectangle)){
+                    entity.collisionWithMap();
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
@@ -169,15 +198,36 @@ public abstract class PhysicsComponent implements Component {
         return false;
     }
 
-    public void setState(Entity.State state) {
-        this.state = state;
+    public void setCurrentState(Entity.State currentState) {
+        this.currentState = currentState;
     }
 
     public void setDirection(Entity.Direction direction) {
         this.currentDirection = direction;
     }
 
-    public void setCurrentPosition(Vector2 position) {
-        this.currentPosition = position;
+    protected void sendDirection(Entity entity){
+        entity.setDirection(currentDirection);
     }
+
+    protected void sendState(Entity entity){
+        entity.setState(currentState);
+    }
+
+    public Entity.Direction findPath(Vector2 gotoVector) {
+        Vector2 delta = new Vector2( gotoVector.x - currentPosition.x, gotoVector.y - currentPosition.y);
+        if (Math.abs(delta.x) > Math.abs(delta.y)){
+            if(delta.x >0)
+                return Entity.Direction.RIGHT;
+            else
+                return Entity.Direction.LEFT;
+        } else {
+            if (delta.y >0)
+                return Entity.Direction.UP;
+            else
+                return Entity.Direction.DOWN;
+        }
+    }
+
+
 }

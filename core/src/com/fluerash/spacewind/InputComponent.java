@@ -13,7 +13,13 @@ public abstract class InputComponent implements Component, InputProcessor {
         LEFT, RIGHT, UP, DOWN, PAUSE, QUIT
     }
 
-    protected static Map<Keys, Boolean> keys = new HashMap<Keys,Boolean>();
+    protected enum Mouse {
+        SELECT, DOACTION
+    }
+
+    protected static Map<Keys, Boolean> keys = new HashMap<>();
+    protected static Map<Mouse, Boolean> mouseButtons = new HashMap<>();
+
     //initialize the hashmap for inputs
     static {
         keys.put(Keys.LEFT, false);
@@ -22,6 +28,10 @@ public abstract class InputComponent implements Component, InputProcessor {
         keys.put(Keys.DOWN, false);
         keys.put(Keys.QUIT, false);
         keys.put(Keys.PAUSE, false);
+    };
+    static {
+        mouseButtons.put(Mouse.SELECT, false);
+        mouseButtons.put(Mouse.DOACTION, false);
     };
 
     protected Entity.Direction currentDirection = null;
@@ -35,5 +45,9 @@ public abstract class InputComponent implements Component, InputProcessor {
 
     public void setDirection(Entity.Direction direction) {
         this.currentDirection = direction;
+    }
+
+    public void collisionWithMap(){
+        currentDirection = Entity.Direction.getRandomNext();
     }
 }
