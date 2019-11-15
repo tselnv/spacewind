@@ -2,9 +2,9 @@ package com.fluerash.spacewind;
 
 
 import com.badlogic.gdx.InputProcessor;
+import java.util.Map;
 
 import java.util.HashMap;
-import java.util.Map;
 
 public abstract class InputComponent implements Component, InputProcessor {
     private static final String TAG = InputComponent.class.getSimpleName();
@@ -37,7 +37,7 @@ public abstract class InputComponent implements Component, InputProcessor {
     protected Entity.Direction currentDirection = null;
     protected Entity.State currentState = null;
 
-    public abstract void update(Entity entity, float delta);
+    public abstract void update(Entity entity, com.fluerash.spacewind.maps.Map map, float delta);
 
     public void setState(Entity.State state) {
         this.currentState = state;

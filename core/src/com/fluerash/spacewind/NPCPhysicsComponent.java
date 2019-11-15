@@ -10,8 +10,8 @@ public class NPCPhysicsComponent extends PhysicsComponent {
         super();
         boundingBoxLocation = BoundingBoxLocation.CENTER;
         initBoundingBox(0.4f, 0.15f);
-        currentPosition = new Vector2(MathUtils.random(5, 195),MathUtils.random(5, 195));
-        //currentPosition = new Vector2(5,5);
+        //currentPosition = new Vector2(MathUtils.random(5, 195),MathUtils.random(5, 195));
+        currentPosition = new Vector2(5,5);
         nextPosition = currentPosition.cpy();
     }
 

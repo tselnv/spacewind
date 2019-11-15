@@ -68,7 +68,7 @@ public class MainGameScreen implements Screen {
 
         npcList = new ArrayList<>();
 
-        for(int i = 0; i < 1000; i++) {
+        for(int i = 0; i < 1; i++) {
             NPC npc = new NPC(this);
             npc.init();
             npcList.add(npc);
@@ -193,7 +193,7 @@ public class MainGameScreen implements Screen {
 
         Vector2 gotoVector = new Vector2(temp.x, temp.y);
         for(NPC npc: npcList){
-            ((NPCInputComponent) npc.inputComponent).gotoPosition(gotoVector);
+            ((NPCInputComponent) npc.inputComponent).gotoPosition(npc.physicsComponent.currentPosition, gotoVector, map.getPathGraph());
         }
     }
 }

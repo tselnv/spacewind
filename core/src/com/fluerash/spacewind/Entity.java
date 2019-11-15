@@ -81,7 +81,7 @@ public class Entity {
     }
 
     public void update(Map map, Batch batch, float delta){
-        inputComponent.update(this, delta);
+        inputComponent.update(this, map, delta);
         physicsComponent.update(this, map, delta);
         graphicsComponent.update(this, map, batch, delta);
     }

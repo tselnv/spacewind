@@ -3,12 +3,22 @@ package com.fluerash.spacewind;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.ai.pfa.DefaultGraphPath;
+import com.badlogic.gdx.ai.pfa.GraphPath;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Array;
+import com.fluerash.spacewind.pathfinder.PathGraph;
+import com.fluerash.spacewind.pathfinder.PathNode;
+
+import java.util.Map;
 
 public class NPCInputComponent extends InputComponent implements InputProcessor {
     private static final String TAG = NPCInputComponent.class.getSimpleName();
+
+    GraphPath<PathNode> pathNodes;
+    Array<PathNode> nodes;
 
     enum FmState{
         NORMAL, GOTO
@@ -28,7 +38,7 @@ public class NPCInputComponent extends InputComponent implements InputProcessor 
     }
 
     @Override
-    public void update(Entity entity, float delta) {
+    public void update(Entity entity, com.fluerash.spacewind.maps.Map map, float delta) {
         if(keys.get(Keys.QUIT)) {
             Gdx.app.exit();
         }
@@ -80,7 +90,9 @@ public class NPCInputComponent extends InputComponent implements InputProcessor 
     }
 
     private void updateStateAndDirectionAtGoto(Entity entity){
-        currentDirection = entity.findPath(gotoVector);
+        if (nodes.size > 0){
+            currentDirection = entity.findPath(nodes.get(0).getVector());
+        }
         currentState = Entity.State.WALKING;
     }
 
@@ -177,8 +189,18 @@ public class NPCInputComponent extends InputComponent implements InputProcessor 
         mouseButtons.put(Mouse.DOACTION, false);
     }
 
-    public void gotoPosition(Vector2 gotoVector){
+    public void gotoPosition(Vector2 startVector, Vector2 gotoVector, PathGraph pathGraph){
         fmState = FmState.GOTO;
-        this.gotoVector = gotoVector;
+
+        pathNodes = pathGraph.findPath(startVector, gotoVector);
+        nodes = ((DefaultGraphPath<PathNode>)pathNodes).nodes;
+
+        this.gotoVector = nodes.get(0).getVector();
+
+        System.out.println();
+        for (PathNode node : pathNodes) {
+            System.out.print(node.getName() + " ");
+        }
+        System.out.println();
     }
 }

@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.fluerash.spacewind.Utility;
+import com.fluerash.spacewind.pathfinder.PathFinding;
+import com.fluerash.spacewind.pathfinder.PathGraph;
 
 public class Map {
 
@@ -23,11 +25,14 @@ public class Map {
 
     private MapLayer collisionLayer = null;
 
+    private PathGraph pathGraph;
+
     public Map(String mapPath) {
         this.mapPath = mapPath;
 
 
         setTiledMap(mapPath);
+        pathGraph = new PathGraph(this);
     }
 
     public TiledMap getTiledMap() {
@@ -77,6 +82,10 @@ public class Map {
 
     public MapLayer getCollisionLayer() {
         return collisionLayer;
+    }
+
+    public PathGraph getPathGraph() {
+        return pathGraph;
     }
 }
 

@@ -215,6 +215,8 @@ public abstract class PhysicsComponent implements Component {
     }
 
     public Entity.Direction findPath(Vector2 gotoVector) {
+
+
         Vector2 delta = new Vector2( gotoVector.x - currentPosition.x, gotoVector.y - currentPosition.y);
         if (Math.abs(delta.x) > Math.abs(delta.y)){
             if(delta.x >0)
